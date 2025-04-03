@@ -1,0 +1,67 @@
+---
+interface Testimonial {
+    name: string;
+    role: string;
+    company: string;
+    quote: string;
+}
+
+const testimonials: Testimonial[] = [
+    {
+        name: "Sarah Chen",
+        role: "Lead Engineer",
+        company: "TechCorp",
+        quote: "DevFlow reduced our API development time by 70%. The automatic scaling handled our traffic spikes flawlessly during our product launch."
+    },
+    {
+        name: "Carlos Rodriguez",
+        role: "CTO",
+        company: "StartupX",
+        quote: "With DevFlow, we built and deployed our entire API infrastructure in a single day. The built-in auth and database integrations saved us months of work."
+    },
+    {
+        name: "Priya Patel",
+        role: "Indie Developer",
+        company: "",
+        quote: "As a solo developer, DevFlow's free tier gave me everything I needed to launch my side project. The community has been incredibly helpful whenever I got stuck."
+    }
+];
+
+// Sample company logos - replace with actual company logos
+const companies = ["Company1", "Company2", "Company3", "Company4", "Company5", "Company6"];
+---
+
+<section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <h2 class="text-4xl font-bold text-gray-900 text-center mb-16">
+            Trusted by developers worldwide
+        </h2>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+            {testimonials.map(testimonial => (
+                <div class="bg-white p-6 rounded-lg shadow-sm">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 bg-gray-200 rounded-full"></div>
+                        <div class="ml-4">
+                            <h3 class="font-semibold text-gray-900">{testimonial.name}</h3>
+                            <p class="text-sm text-gray-600">
+                                {testimonial.role}
+                                {testimonial.company && `, ${testimonial.company}`}
+                            </p>
+                        </div>
+                    </div>
+                    <p class="text-gray-600 italic">"{testimonial.quote}"</p>
+                </div>
+            ))}
+        </div>
+
+        <div class="text-center">
+            <p class="text-sm font-medium text-gray-500 mb-8">TRUSTED BY COMPANIES OF ALL SIZES</p>
+            <div class="grid grid-cols-2 md:grid-cols-6 gap-8 items-center justify-items-center">
+                {companies.map(company => (
+                    <div class="h-12 w-32 bg-gray-200 rounded"></div>
+                ))}
+            </div>
+        </div>
+    </div>
+</section>
