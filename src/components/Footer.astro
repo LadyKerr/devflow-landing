@@ -1,0 +1,75 @@
+---
+interface FooterSection {
+    title: string;
+    links: Array<{
+        text: string;
+        href: string;
+    }>;
+}
+
+const documentationSection: FooterSection = {
+    title: "Documentation",
+    links: [
+        { text: "Quick Start Guide", href: "/docs/quick-start" },
+        { text: "API Reference", href: "/docs/api" },
+        { text: "Tutorials & Guides", href: "/docs/tutorials" },
+        { text: "Best Practices", href: "/docs/best-practices" }
+    ]
+};
+
+const communitySection: FooterSection = {
+    title: "Community & Support",
+    links: [
+        { text: "Discord Community", href: "https://discord.gg/devflow" },
+        { text: "GitHub Discussions", href: "https://github.com/devflow/discussions" },
+        { text: "Stack Overflow Tag", href: "https://stackoverflow.com/questions/tagged/devflow" },
+        { text: "Support Contact", href: "/support" }
+    ]
+};
+---
+
+<footer class="bg-white border-t border-gray-200 py-12">
+    <div class="container mx-auto px-4">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+            {/* Documentation Section */}
+            <div>
+                <h3 class="font-semibold text-gray-900 mb-4">{documentationSection.title}</h3>
+                <p class="text-gray-600 text-sm mb-4">
+                    Comprehensive guides, API references, and examples to help you get started quickly.
+                </p>
+                <ul class="space-y-2">
+                    {documentationSection.links.map(link => (
+                        <li>
+                            <a href={link.href} class="text-indigo-600 hover:text-indigo-700 text-sm">
+                                {link.text}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+
+            {/* Community Section */}
+            <div>
+                <h3 class="font-semibold text-gray-900 mb-4">{communitySection.title}</h3>
+                <p class="text-gray-600 text-sm mb-4">
+                    Join our community of developers and get help whenever you need it.
+                </p>
+                <ul class="space-y-2">
+                    {communitySection.links.map(link => (
+                        <li>
+                            <a href={link.href} class="text-indigo-600 hover:text-indigo-700 text-sm">
+                                {link.text}
+                            </a>
+                        </li>
+                    ))}
+                </ul>
+            </div>
+        </div>
+
+        <div class="mt-12 pt-8 border-t border-gray-200">
+            <div class="text-center text-sm text-gray-600">
+                <p>&copy; {new Date().getFullYear()} DevFlow. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
