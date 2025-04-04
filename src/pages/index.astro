@@ -9,9 +9,11 @@ import TrustedByDevs from '../components/TrustedByDevs.astro';
 import TryYourself from '../components/TryYourself.astro';
 import CallToAction from '../components/CallToAction.astro';
 import Footer from '../components/Footer.astro';
+
+const title = "DevFlow - Serverless API Platform";
 ---
 
-<Layout>
+<Layout title={title}>
     <Navbar />
     <Hero />
     <ByDevelopers />
