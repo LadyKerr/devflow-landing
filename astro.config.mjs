@@ -11,5 +11,7 @@ export default defineConfig({
 
   vite: {
     plugins: [tailwindcss()]
-  }
+  },
+  site: 'https://ladykerr.github.io',
+  base: '/devflow-landing'
 });
