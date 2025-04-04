@@ -1,0 +1,62 @@
+---
+import dashboardPreview from '../assets/dashboard-preview.png';
+
+interface Feature {
+    title: string;
+    description: string;
+}
+
+const features: Feature[] = [
+    {
+        title: "Real-time Metrics",
+        description: "Monitor latency, error rates, and throughput in real-time."
+    },
+    {
+        title: "Request Explorer",
+        description: "Debug API calls with detailed logs and request tracing."
+    },
+    {
+        title: "Team Collaboration",
+        description: "Manage permissions and collaborate with your entire team."
+    }
+];
+---
+
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                Powerful dashboard for API management
+            </h2>
+            <p class="text-xl text-gray-600">
+                Monitor, debug, and optimize your APIs with our intuitive dashboard.
+            </p>
+        </div>
+
+        <div class="max-w-6xl mx-auto">
+            {/* Dashboard Preview Image */}
+            <div class="relative w-full rounded-lg shadow-lg mb-16 overflow-hidden bg-[#111827] border border-gray-800">
+                <img 
+                    src={dashboardPreview.src} 
+                    alt="DevFlow Dashboard Preview showing API metrics, request logs, and team management interface"
+                    class="w-full h-auto"
+                    loading="lazy"
+                />
+            </div>
+
+            {/* Features Grid */}
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                {features.map(feature => (
+                    <div class="text-center">
+                        <h3 class="text-xl font-semibold text-gray-900 mb-2">
+                            {feature.title}
+                        </h3>
+                        <p class="text-gray-600">
+                            {feature.description}
+                        </p>
+                    </div>
+                ))}
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,72 @@
+---
+import background from '../assets/background.svg';
+
+const codeExample = `import { DevFlow } from '@devflow/api';
+
+// Initialize API endpoint
+const api = new DevFlow.API({
+    name: 'users-api',
+    auth: true
+});
+
+// Create a new user
+api.post('/users', async (req, res) => {
+    const user = await db.users.create(req.body);
+    return res.json(user);
+});
+
+// Deploy with a single command
+api.deploy();`;
+---
+
+<div class="relative overflow-hidden bg-gradient-to-b from-indigo-600/10">
+    <img src={background.src} alt="" class="absolute inset-0 w-full h-full object-cover opacity-10" />
+    <div class="relative pt-32 pb-20 sm:pt-40 sm:pb-24">
+        <div class="container mx-auto px-4">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                {/* Left side - Hero content */}
+                <div>
+                    <h1 class="text-4xl sm:text-6xl font-bold text-gray-900 mb-6">
+                        Build APIs in minutes, not months
+                    </h1>
+                    <p class="text-xl text-gray-600 mb-8">
+                        DevFlow's serverless API platform lets you focus on code, not infrastructure. Scale automatically from prototype to production.
+                    </p>
+                    <div class="flex flex-wrap gap-4">
+                        <a 
+                            href="/get-started" 
+                            class="bg-indigo-600 text-white px-8 py-3 rounded-md hover:bg-indigo-700 font-medium transition-colors duration-200"
+                        >
+                            Get Started Free
+                        </a>
+                        <a 
+                            href="/docs" 
+                            class="text-gray-600 hover:text-gray-900 px-8 py-3 border border-gray-300 rounded-md font-medium transition-colors duration-200 hover:bg-gray-50"
+                        >
+                            View Docs
+                        </a>
+                    </div>
+                </div>
+
+                {/* Right side - Code editor preview */}
+                <div class="lg:pl-8">
+                    <div class="bg-[#1a1f36] rounded-lg shadow-xl overflow-hidden">
+                        {/* Editor header */}
+                        <div class="px-4 py-3 bg-[#0f111a] flex items-center space-x-2 border-b border-gray-800">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            </div>
+                        </div>
+                        
+                        {/* Code content */}
+                        <div class="p-6">
+                            <pre class="text-sm text-gray-300 font-mono"><code>{codeExample}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,260 @@
+---
+interface Tab {
+    id: string;
+    label: string;
+    code: string;
+}
+
+const tabs: Tab[] = [
+    {
+        id: 'rest',
+        label: 'REST API',
+        code: `import { RestApi } from '@devflow/api';
+import { db } from '@devflow/database';
+
+// Initialize and configure API
+const api = new RestApi({
+    port: 3000,
+    name: 'todo-api',
+    cors: true,
+    middleware: (api, req, next) => {
+        // ...
+    }
+});
+
+// Create a new todo
+api.post('/todos', async (req, res) => {
+    const { title, description } = req.body;
+    
+    // Validate input
+    if (!title) {
+        return res.status(400).json({
+            error: 'Title is required'
+        });
+    }
+
+    // Create record in database
+    const todo = await db.todos.create({
+        title,
+        description: false,
+        userId: req.user.id,
+        createdAt: new Date()
+    });
+
+    return res.json(todo);
+});
+
+// List all todos for the authenticated user
+api.get('/todos', async (req, res) => {
+    const todos = await db.todos.find({
+        where: { userId: req.user.id },
+        orderBy: { createdAt: 'desc' }
+    });
+
+    return res.json(todos);
+});
+
+// One-command deployment
+api.deploy();`
+    },
+    {
+        id: 'graphql',
+        label: 'GraphQL',
+        code: `import { GraphQLApi } from '@devflow/api';
+import { db } from '@devflow/database';
+
+const api = new GraphQLApi({
+    schema: \`
+        type Todo {
+            id: ID!
+            title: String!
+            completed: Boolean!
+            user: User!
+        }
+
+        type Query {
+            todos: [Todo!]!
+            todo(id: ID!): Todo
+        }
+
+        type Mutation {
+            createTodo(title: String!): Todo!
+            updateTodo(id: ID!, completed: Boolean!): Todo!
+        }
+    \`
+});
+
+api.resolver('Query', {
+    todos: (_, args, ctx) => {
+        return db.todos.findMany({
+            where: { userId: ctx.user.id }
+        });
+    }
+});
+
+api.resolver('Mutation', {
+    createTodo: async (_, { title }, ctx) => {
+        return db.todos.create({
+            title,
+            userId: ctx.user.id
+        });
+    }
+});`
+    },
+    {
+        id: 'webhooks',
+        label: 'Webhooks',
+        code: `import { WebhookApi } from '@devflow/api';
+
+const api = new WebhookApi({
+    secret: process.env.WEBHOOK_SECRET
+});
+
+// Register webhook handlers
+api.on('payment.success', async (event) => {
+    const { customerId, amount } = event.data;
+    
+    // Process the payment
+    await db.payments.create({
+        customerId,
+        amount,
+        status: 'completed'
+    });
+
+    // Trigger notifications
+    await notify.customer({
+        type: 'payment_received',
+        customerId
+    });
+});
+
+// Validate webhook signatures
+api.middleware((req, res, next) => {
+    const signature = req.headers['x-webhook-signature'];
+    if (!api.verifySignature(signature)) {
+        return res.status(401).json({
+            error: 'Invalid signature'
+        });
+    }
+    next();
+});`
+    },
+    {
+        id: 'auth',
+        label: 'Authentication',
+        code: `import { Auth } from '@devflow/auth';
+
+const auth = new Auth({
+    providers: {
+        oauth: {
+            github: {
+                clientId: process.env.GITHUB_CLIENT_ID,
+                clientSecret: process.env.GITHUB_CLIENT_SECRET
+            },
+            google: {
+                clientId: process.env.GOOGLE_CLIENT_ID,
+                clientSecret: process.env.GOOGLE_CLIENT_SECRET
+            }
+        },
+        jwt: {
+            secret: process.env.JWT_SECRET,
+            expiresIn: '7d'
+        }
+    }
+});
+
+// Protect routes
+api.use(auth.middleware());
+
+// OAuth authentication routes
+api.get('/auth/:provider', auth.handleOAuth());
+api.get('/auth/:provider/callback', auth.handleCallback());
+
+// JWT authentication
+api.post('/auth/login', async (req, res) => {
+    const { email, password } = req.body;
+    const token = await auth.createToken({ email, password });
+    res.json({ token });
+});`
+    }
+];
+
+const { activeTab = 'rest' } = Astro.props;
+---
+
+<section class="py-20 bg-gray-50">
+    <div class="container mx-auto px-4">
+        <div class="max-w-4xl mx-auto text-center mb-12">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">
+                Simple, powerful API development
+            </h2>
+            <p class="text-xl text-gray-600">
+                From simple REST endpoints to complex GraphQL services, build it all with DevFlow.
+            </p>
+        </div>
+
+        <div class="max-w-5xl mx-auto">
+            <div class="bg-white rounded-lg shadow-lg overflow-hidden">
+                <div class="flex border-b border-gray-200">
+                    {tabs.map(tab => (
+                        <button
+                            class={`px-6 py-3 text-sm font-medium ${
+                                activeTab === tab.id
+                                    ? 'text-indigo-600 border-b-2 border-indigo-600'
+                                    : 'text-gray-500 hover:text-gray-700'
+                            }`}
+                            data-tab={tab.id}
+                        >
+                            {tab.label}
+                        </button>
+                    ))}
+                </div>
+                
+                <div class="p-6 bg-gray-900">
+                    {tabs.map(tab => (
+                        <div
+                            class={`${activeTab === tab.id ? 'block' : 'hidden'}`}
+                            data-content={tab.id}
+                        >
+                            <pre class="text-sm text-gray-300 font-mono"><code>{tab.code}</code></pre>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    // Handle tab switching
+    const tabButtons = document.querySelectorAll('[data-tab]');
+    const tabContents = document.querySelectorAll('[data-content]');
+
+    tabButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const tabId = button.getAttribute('data-tab');
+            
+            // Update active states
+            tabButtons.forEach(btn => {
+                if (btn.getAttribute('data-tab') === tabId) {
+                    btn.classList.add('text-indigo-600', 'border-b-2', 'border-indigo-600');
+                    btn.classList.remove('text-gray-500', 'hover:text-gray-700');
+                } else {
+                    btn.classList.remove('text-indigo-600', 'border-b-2', 'border-indigo-600');
+                    btn.classList.add('text-gray-500', 'hover:text-gray-700');
+                }
+            });
+
+            // Show active content
+            tabContents.forEach(content => {
+                if (content.getAttribute('data-content') === tabId) {
+                    content.classList.remove('hidden');
+                    content.classList.add('block');
+                } else {
+                    content.classList.remove('block');
+                    content.classList.add('hidden');
+                }
+            });
+        });
+    });
+</script>

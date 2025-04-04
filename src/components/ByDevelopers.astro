@@ -1,0 +1,56 @@
+---
+// Feature data could be moved to a separate data file if needed
+const features = [
+    {
+        icon: "⚡",
+        title: "Instant Deployment",
+        description: "Go from code to production in seconds with zero configuration. CI/CD pipeline included."
+    },
+    {
+        icon: "🗄️",
+        title: "Managed Database",
+        description: "Built-in database with automatic scaling, backups, and data validation."
+    },
+    {
+        icon: "🔒",
+        title: "Built-in Auth",
+        description: "Secure APIs with zero config auth. JWT, OAuth, and API keys supported out of the box."
+    },
+    {
+        icon: "📈",
+        title: "Auto-Scaling",
+        description: "Handles traffic spikes automatically. Scale to zero when idle to optimize costs."
+    },
+    {
+        icon: "⏱️",
+        title: "Real-time Monitoring",
+        description: "Live metrics, logs, and traces with built-in alerting. Debug with confidence."
+    },
+    {
+        icon: "⚖️",
+        title: "Fair Pricing",
+        description: "Free tier for hobbyists and startups. Pay only for what you use with no surprises."
+    }
+];
+---
+
+<section class="py-20 bg-white">
+    <div class="container mx-auto px-4">
+        <div class="text-center mb-16">
+            <h2 class="text-4xl font-bold text-gray-900 mb-4">Built for developers, by developers</h2>
+            <p class="text-xl text-gray-600">Everything you need to build, deploy, and scale APIs with confidence.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map(feature => (
+                <div class="p-6 bg-gray-50 rounded-lg">
+                    <div class="w-12 h-12 bg-indigo-100 rounded-lg flex items-center justify-center text-2xl mb-4">
+                        {feature.icon}
+                    </div>
+                    <h3 class="text-xl font-semibold text-gray-900 mb-2">{feature.title}</h3>
+                    <p class="text-gray-600">{feature.description}</p>
+                </div>
+            ))}
+        </div>
+    </div>
+</section>
