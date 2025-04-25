@@ -1,9 +1,14 @@
 ---
+import priyaImage from '../assets/testimonials/priya-patel.jpeg';
+import sarahImage from '../assets/testimonials/sarah-chen.jpeg';
+import carlosImage from '../assets/testimonials/carlos-rodriguez.jpeg';
+
 interface Testimonial {
     name: string;
     role: string;
     company: string;
     quote: string;
+    image: string;
 }
 
 const testimonials: Testimonial[] = [
@@ -11,19 +16,22 @@ const testimonials: Testimonial[] = [
         name: "Sarah Chen",
         role: "Lead Engineer",
         company: "TechCorp",
-        quote: "DevFlow reduced our API development time by 70%. The automatic scaling handled our traffic spikes flawlessly during our product launch."
+        quote: "DevFlow reduced our API development time by 70%. The automatic scaling handled our traffic spikes flawlessly during our product launch.",
+        image: sarahImage.src
     },
     {
         name: "Carlos Rodriguez",
         role: "CTO",
         company: "StartupX",
-        quote: "With DevFlow, we built and deployed our entire API infrastructure in a single day. The built-in auth and database integrations saved us months of work."
+        quote: "With DevFlow, we built and deployed our entire API infrastructure in a single day. The built-in auth and database integrations saved us months of work.",
+        image: carlosImage.src
     },
     {
         name: "Priya Patel",
         role: "Indie Developer",
         company: "",
-        quote: "As a solo developer, DevFlow's free tier gave me everything I needed to launch my side project. The community has been incredibly helpful whenever I got stuck."
+        quote: "As a solo developer, DevFlow's free tier gave me everything I needed to launch my side project. The community has been incredibly helpful whenever I got stuck.",
+        image: priyaImage.src
     }
 ];
 
@@ -41,7 +49,11 @@ const companies = ["Company1", "Company2", "Company3", "Company4", "Company5", "
             {testimonials.map(testimonial => (
                 <div class="bg-white p-6 rounded-lg shadow-sm">
                     <div class="flex items-center mb-4">
-                        <div class="w-12 h-12 bg-gray-200 rounded-full"></div>
+                        <img 
+                            src={testimonial.image} 
+                            alt={`${testimonial.name}`}
+                            class="w-12 h-12 rounded-full object-cover"
+                        />
                         <div class="ml-4">
                             <h3 class="font-semibold text-gray-900">{testimonial.name}</h3>
                             <p class="text-sm text-gray-600">
